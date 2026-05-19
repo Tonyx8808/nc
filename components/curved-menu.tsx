@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, AnimatePresence, cubicBezier } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -41,47 +41,75 @@ const MENU_SLIDE_ANIMATION = {
 const defaultNavItems: iNavItem[] = [
 	{
 		heading: "Home",
-		href: "https://www.ncconsultingsrl.it/",
+		href: "/",
 		subheading: "Torna alla home",
 		imgSrc: "/images/home.jpg",
 	},
 	{
-		heading: "Vantaggi e Assistenza",
-		href: "https://www.ncconsultingsrl.it/vantaggi-e-assistenza/",
-		subheading: "Scopri i nostri vantaggi",
+		heading: "Chi Siamo",
+		href: "/chi-siamo",
+		subheading: "Scopri chi siamo",
 		imgSrc: "/images/about.jpg",
 	},
 	{
+		heading: "Vantaggi e Assistenza",
+		href: "/vantaggi-e-assistenza",
+		subheading: "Scopri i nostri vantaggi",
+		imgSrc: "/images/vantaggi.jpg",
+	},
+	{
 		heading: "Categorie",
-		href: "https://www.ncconsultingsrl.it/shop/",
+		href: "/categorie",
 		subheading: "Visualizza le categorie",
 		imgSrc: "/images/services.jpg",
 	},
 	{
 		heading: "Scuola Lavoro",
-		href: "https://www.ncconsultingsrl.it/scuola-lavoro/",
+		href: "/scuola-lavoro",
 		subheading: "Scopri il programma",
 		imgSrc: "/images/contact.jpg",
 	},
 ];
 
+const DigitalClock: React.FC = () => {
+	const [time, setTime] = useState(new Date());
+
+	useEffect(() => {
+		const interval = window.setInterval(() => setTime(new Date()), 1000);
+		return () => window.clearInterval(interval);
+	}, []);
+
+	return (
+		<div className="rounded-3xl border border-white/20 bg-white/10 px-4 py-2 text-right text-white/90">
+			<span className="text-lg font-semibold">{time.toLocaleTimeString("it-IT", {
+				hour: "2-digit",
+				minute: "2-digit",
+				second: "2-digit",
+			})}</span>
+		</div>
+	);
+};
+
 const CustomFooter: React.FC = () => {
 	return (
-		<div className="flex w-full text-[10px] leading-relaxed text-white/60 px-10 md:px-24 py-5 border-t border-white/20">
-			<address className="not-italic space-y-0.5">
-				<p>
-					<span className="text-white/40 uppercase tracking-widest text-[9px]">Sede Legale</span>
-					<br />
-					Via Roma, 18 — Torre del Greco (NA)
-				</p>
-				<p className="pt-1.5">
-					<span className="text-white/40 uppercase tracking-widest text-[9px]">Sedi Operative</span>
-					<br />
-					Via Murelle, 11 — Angri (SA)
-					<br />
-					Via Brodolini, 26 — Battipaglia (SA)
-				</p>
-			</address>
+		<div className="flex w-full flex-col gap-4 text-[10px] leading-relaxed text-white/60 px-10 md:px-24 py-5 border-t border-white/20">
+			<div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+				<address className="not-italic space-y-0.5">
+					<p>
+						<span className="text-white/40 uppercase tracking-widest text-[9px]">Sede Legale</span>
+						<br />
+						Via Roma, 18 — Torre del Greco (NA)
+					</p>
+					<p className="pt-1.5">
+						<span className="text-white/40 uppercase tracking-widest text-[9px]">Sedi Operative</span>
+						<br />
+						Via Murelle, 11 — Angri (SA)
+						<br />
+						Via Brodolini, 26 — Battipaglia (SA)
+					</p>
+				</address>
+				<DigitalClock />
+			</div>
 		</div>
 	);
 };
