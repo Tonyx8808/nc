@@ -347,25 +347,7 @@ const Hero = () => {
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
-      >
-        <span
-          className="text-[9px] uppercase tracking-[0.45em]"
-          style={{ color: GOLD_LIGHT, opacity: 0.7 }}
-        >
-          Scorri
-        </span>
-        <motion.div
-          className="w-px h-8"
-          style={{ backgroundColor: GOLD, opacity: 0.5 }}
-          animate={{ scaleY: [0.3, 1, 0.3], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        />
-      </motion.div>
+    
     </section>
   );
 };
