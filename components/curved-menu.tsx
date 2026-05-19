@@ -295,17 +295,17 @@ const Header: React.FC<iHeaderProps> = ({
 			<div className="relative">
 				<div
 					onClick={handleClick}
-					className="fixed -right-1 top-0 md:-right-1 m-5 z-50 w-12 h-12 rounded-none flex items-center justify-center cursor-pointer bg-white"
+					className="fixed -right-1 top-0 md:-right-1 m-5 z-50 w-12 h-12 rounded-none flex items-center justify-center cursor-pointer bg-[#080806] border border-white/20"
 				>
 					<div className="relative w-8 h-6 flex flex-col justify-between items-center">
 						<span
-							className={`block h-1 w-7 bg-black transition-transform duration-300 ${isActive ? "rotate-45 translate-y-2" : ""}`}
+							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "rotate-45 translate-y-2 bg-[#E8D5A3]" : "bg-[#C4A054]"}`}
 						></span>
 						<span
-							className={`block h-1 w-7 bg-black transition-opacity duration-300 ${isActive ? "opacity-0" : ""}`}
+							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "opacity-0 bg-[#E8D5A3]" : "bg-[#C4A054]"}`}
 						></span>
 						<span
-							className={`block h-1 w-7 bg-black transition-transform duration-300 ${isActive ? "-rotate-45 -translate-y-3" : ""}`}
+							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "-rotate-45 -translate-y-3 bg-[#E8D5A3]" : "bg-[#C4A054]"}`}
 						></span>
 					</div>
 				</div>
