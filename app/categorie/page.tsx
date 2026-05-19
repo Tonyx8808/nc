@@ -1,8 +1,13 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { PageShell, SectionHeader } from "@/components/home-style";
+import { courseCatalog, CourseKey } from "@/lib/courses";
 
 export default function Categorie() {
+	const router = useRouter();
+
 	const categories = [
 		{
 			title: "Orientamento & Valutazione CFU",
@@ -20,6 +25,13 @@ export default function Categorie() {
 			description: "Certificazioni di lingua inglese a vari livelli QCER.",
 		},
 	];
+
+	const addToCart = (courseId: CourseKey) => {
+		if (typeof window !== "undefined") {
+			window.localStorage.setItem("nc-cart-course", courseId);
+		}
+		router.push("/carrello");
+	};
 
 	return (
 		<PageShell
@@ -42,6 +54,29 @@ export default function Categorie() {
 							<span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#9A7B3A]">Scopri →</span>
 						</div>
 					</Link>
+				))}
+			</div>
+
+			<SectionHeader
+				title="I nostri corsi"
+				description="Scegli uno dei corsi già disponibili e prosegui con l'acquisto interno al sito."
+			/>
+
+			<div className="grid gap-6 lg:grid-cols-3">
+				{Object.entries(courseCatalog).map(([courseId, course]) => (
+					<div key={courseId} className="rounded-[2rem] border border-neutral-200 bg-white p-6 shadow-sm">
+						<h3 className="text-xl font-semibold text-neutral-900 mb-3">{course.title}</h3>
+						<p className="text-xs uppercase tracking-[0.25em] text-[#9A7B3A] mb-2">{course.category}</p>
+						<p className="text-neutral-600 mb-4">{course.description}</p>
+						<div className="flex justify-end pt-4 border-t border-neutral-100">
+							<button
+								onClick={() => addToCart(courseId as CourseKey)}
+								className="rounded-full bg-[#9A7B3A] px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-[#7a6028]"
+							>
+								Aggiungi al carrello
+							</button>
+						</div>
+					</div>
 				))}
 			</div>
 		</PageShell>

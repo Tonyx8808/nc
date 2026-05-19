@@ -244,6 +244,83 @@ const Footer: React.FC = () => {
 					opacity: 0.6;
 					flex-shrink: 0;
 				}
+
+				/* ── Responsive layout ── */
+				.footer-content-wrapper {
+					max-width: 1280px;
+					margin: 0 auto;
+					padding: 2.5rem 1.25rem 0;
+				}
+				.footer-top-grid {
+					display: grid;
+					grid-template-columns: 1fr;
+					gap: 2rem;
+					margin-bottom: 2.5rem;
+				}
+				.footer-brand-col {
+					padding-right: 0;
+				}
+				.footer-addresses-grid {
+					display: grid;
+					grid-template-columns: 1fr;
+					gap: 1.25rem;
+					margin-bottom: 2rem;
+					padding-top: 1.5rem;
+					border-top: 1px solid rgba(255,255,255,0.06);
+				}
+				.footer-bottom-inner {
+					max-width: 1280px;
+					margin: 0 auto;
+					padding: 1.25rem;
+					display: flex;
+					flex-direction: column;
+					gap: 0.75rem;
+				}
+				.footer-bottom-links {
+					display: flex;
+					flex-wrap: wrap;
+					align-items: center;
+					gap: 1rem;
+				}
+				@media (min-width: 640px) {
+					.footer-top-grid {
+						grid-template-columns: repeat(2, 1fr);
+						gap: 2.5rem;
+						margin-bottom: 3rem;
+					}
+					.footer-addresses-grid {
+						grid-template-columns: repeat(2, 1fr);
+						gap: 1.5rem;
+					}
+				}
+				@media (min-width: 1024px) {
+					.footer-content-wrapper {
+						padding: 5rem 2rem 0;
+					}
+					.footer-top-grid {
+						grid-template-columns: 1.6fr 1fr 1fr 1.1fr;
+						gap: 3rem;
+						margin-bottom: 4rem;
+					}
+					.footer-brand-col {
+						padding-right: 2rem;
+					}
+					.footer-addresses-grid {
+						grid-template-columns: repeat(3, 1fr);
+						gap: 2rem;
+						margin-bottom: 3rem;
+						padding-top: 2.5rem;
+					}
+					.footer-bottom-inner {
+						flex-direction: row;
+						justify-content: space-between;
+						align-items: center;
+						padding: 1.5rem 2rem;
+					}
+					.footer-bottom-links {
+						gap: 2rem;
+					}
+				}
 			`}</style>
 
 			<footer ref={footerRef} className="footer-root">
@@ -251,13 +328,13 @@ const Footer: React.FC = () => {
 				<div className="footer-glow" />
 
 				{/* Main content */}
-				<div style={{ maxWidth: '1280px', margin: '0 auto', padding: '5rem 2rem 0' }}>
+				<div className="footer-content-wrapper">
 
 					{/* Top row: Brand + columns */}
-					<div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1.1fr', gap: '3rem', marginBottom: '4rem' }}>
+					<div className="footer-top-grid">
 
 						{/* Brand column */}
-						<div className="footer-animate" style={{ paddingRight: '2rem' }}>
+						<div className="footer-animate footer-brand-col">
 							<div style={{ marginBottom: '1.5rem' }}>
 								<div className="footer-brand-name">
 									NC <span>Consulting</span>
@@ -336,31 +413,29 @@ const Footer: React.FC = () => {
 					</div>
 
 					{/* Addresses */}
-					<div style={{ marginBottom: '3rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
-							{[
-								{ type: 'Sede Legale', addr: 'Via Roma, 18', city: 'Torre del Greco (NA) 80059' },
-								{ type: 'Sede Operativa', addr: 'Via Murelle, 11', city: 'Angri (SA) 84012' },
-								{ type: 'Sede Operativa', addr: 'Via Brodolini, 26', city: 'Battipaglia (SA) 84091' },
-							].map(({ type, addr, city }) => (
-								<address key={city} className="footer-address">
-									<strong>{type}</strong>
-									{addr}<br />{city}
-								</address>
-							))}
-						</div>
+					<div className="footer-addresses-grid">
+						{[
+							{ type: 'Sede Legale', addr: 'Via Roma, 18', city: 'Torre del Greco (NA) 80059' },
+							{ type: 'Sede Operativa', addr: 'Via Murelle, 11', city: 'Angri (SA) 84012' },
+							{ type: 'Sede Operativa', addr: 'Via Brodolini, 26', city: 'Battipaglia (SA) 84091' },
+						].map(({ type, addr, city }) => (
+							<address key={city} className="footer-address">
+								<strong>{type}</strong>
+								{addr}<br />{city}
+							</address>
+						))}
 					</div>
 				</div>
 
 				{/* Bottom bar */}
 				<div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.4)' }}>
-					<div style={{ maxWidth: '1280px', margin: '0 auto', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+					<div className="footer-bottom-inner">
 						<p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.05em', fontWeight: 300 }}>
 							© {currentYear} NC Consulting S.r.l.
 							<span className="footer-diamond" />
 							Tutti i diritti riservati
 						</p>
-						<div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+						<div className="footer-bottom-links">
 							{['Privacy Policy', 'Cookie Policy', 'Termini e Condizioni'].map((item, i) => (
 								<React.Fragment key={item}>
 									{i > 0 && <span style={{ width: '1px', height: '10px', background: 'rgba(255,255,255,0.1)', display: 'inline-block' }} />}

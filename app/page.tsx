@@ -65,14 +65,23 @@ const OverlayCopy = ({
     >
       <div
         className="mb-5 px-4 py-1.5 rounded-full"
-        style={{ backgroundColor: "rgba(154,123,58,0.25)", border: "0.5px solid rgba(196,160,84,0.5)", backdropFilter: "blur(8px)" }}
+        style={{
+          backgroundColor: "rgba(154,123,58,0.25)",
+          border: "0.5px solid rgba(196,160,84,0.5)",
+          backdropFilter: "blur(8px)",
+        }}
       >
-        <p className="text-[10px] uppercase tracking-[0.45em] font-semibold" style={{ color: GOLD_PALE }}>
+        <p
+          className="text-[10px] uppercase tracking-[0.45em] font-semibold"
+          style={{ color: GOLD_PALE }}
+        >
           {subheading}
         </p>
       </div>
-      <p className="text-center text-4xl font-bold md:text-6xl lg:text-7xl leading-tight"
-        style={{ textShadow: "0 2px 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)" }}>
+      <p
+        className="text-center text-4xl font-bold md:text-6xl lg:text-7xl leading-tight"
+        style={{ textShadow: "0 2px 40px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)" }}
+      >
         {heading}
       </p>
     </motion.div>
@@ -128,7 +137,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative flex h-screen items-center justify-center overflow-hidden bg-[#080806]">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#080806] py-20">
 
       {/* Sfondo: parallax mouse + Ken Burns */}
       <motion.div
@@ -214,7 +223,6 @@ const Hero = () => {
             rotate: { duration: dur, repeat: Infinity, ease: "linear" },
           }}
         >
-          {/* Marcatore angolare per rendere visibile la rotazione */}
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{ width: 4, height: 4, backgroundColor: GOLD, opacity: 0.5 }}
@@ -239,7 +247,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-4 mb-12"
+          className="inline-flex items-center gap-4 mb-8"
         >
           <motion.div
             className="h-px"
@@ -264,8 +272,10 @@ const Hero = () => {
         </motion.div>
 
         {/* Titolo animato parola per parola */}
-        <h1 className="font-bold leading-[0.92] text-white tracking-tight select-none"
-          style={{ fontSize: "clamp(3.5rem, 12vw, 9rem)" }}>
+        <h1
+          className="font-bold leading-[0.92] text-white tracking-tight select-none"
+          style={{ fontSize: "clamp(2.8rem, 8vw, 6rem)" }}
+        >
           <span className="block">
             <AnimatedWord word="Il tuo" delay={0.3} />
           </span>
@@ -285,8 +295,13 @@ const Hero = () => {
 
         {/* Separatore oro animato */}
         <motion.div
-          className="mx-auto my-10"
-          style={{ height: "1px", backgroundColor: GOLD, transformOrigin: "center" }}
+          className="mx-auto my-6"
+          style={{
+            height: "1px",
+            backgroundColor: GOLD,
+            transformOrigin: "center",
+            maxWidth: "480px",
+          }}
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 0.5 }}
           transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 1.1 }}
@@ -297,21 +312,21 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
-          className="max-w-lg mx-auto text-neutral-400 text-base md:text-lg leading-relaxed mb-12"
+          className="max-w-lg mx-auto text-neutral-400 text-base md:text-lg leading-relaxed mb-8"
         >
           Orientamento, tutoraggio e percorsi formativi su misura per studenti,
           docenti e professionisti.
         </motion.p>
 
-        {/* CTA buttons */}
+        {/* CTA buttons — FIX: href corretti + secondo bottone aggiunto */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <a
-            href="https://www.ncconsultingsrl.it/vantaggi-e-assistenza/"
+            href="/vantaggi-e-assistenza"
             className="group relative px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-white overflow-hidden transition-all duration-300"
             style={{ backgroundColor: GOLD }}
           >
@@ -322,7 +337,7 @@ const Hero = () => {
             />
           </a>
           <a
-            href="https://www.ncconsultingsrl.it/shop/"
+            href="/categorie"
             className="px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-white border transition-colors duration-300 hover:bg-white/10"
             style={{ borderColor: "rgba(255,255,255,0.25)" }}
           >
@@ -365,14 +380,14 @@ const SectionDivider = () => (
 );
 
 const ChiSiamoContent = () => (
-  <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-10 px-6 py-24">
+  <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 px-4 sm:px-6 py-12 md:py-24">
     <div className="md:col-span-4 space-y-2">
       <p className="text-[10px] uppercase tracking-[0.4em] font-light" style={{ color: GOLD }}>
         La nostra storia
       </p>
-      <h2 className="text-4xl font-bold text-neutral-900">Chi Siamo</h2>
+      <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">Chi Siamo</h2>
       <SectionDivider />
-      <div className="flex gap-8 pt-2">
+      <div className="flex gap-4 sm:gap-8 pt-2">
         {[["3", "Università"], ["10+", "Anni"], ["1000+", "Studenti"]].map(([n, l]) => (
           <div key={l}>
             <p className="text-2xl font-bold" style={{ color: GOLD }}>{n}</p>
@@ -403,7 +418,7 @@ const ChiSiamoContent = () => (
 );
 
 const ScuolaLavoroContent = () => (
-  <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-10 px-6 py-24">
+  <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 px-4 sm:px-6 py-12 md:py-24">
     <div className="md:col-span-4 space-y-2">
       <p className="text-[10px] uppercase tracking-[0.4em] font-light" style={{ color: GOLD }}>
         Studio e professione
@@ -426,7 +441,10 @@ const ScuolaLavoroContent = () => (
           ["Percorsi ad hoc", "Strutturati per raggiungere il massimo del risultato"],
           ["Rete territoriale", "Connessioni con aziende, enti e servizi per l'impiego"],
         ].map(([title, desc]) => (
-          <div key={title} className="flex gap-4 p-4 rounded-lg bg-neutral-50 border border-neutral-100">
+          <div
+            key={title}
+            className="flex gap-4 p-4 rounded-lg bg-neutral-50 border border-neutral-100"
+          >
             <div className="w-1 rounded-full shrink-0" style={{ backgroundColor: GOLD }} />
             <div>
               <p className="font-semibold text-neutral-800 text-base">{title}</p>
@@ -440,9 +458,12 @@ const ScuolaLavoroContent = () => (
 );
 
 const GPSContent = () => (
-  <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-10 px-6 py-24">
+  <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 px-4 sm:px-6 py-12 md:py-24">
     <div className="md:col-span-4 space-y-2">
-      <p className="text-[10px] uppercase tracking-[0.35em] font-light leading-relaxed" style={{ color: GOLD }}>
+      <p
+        className="text-[10px] uppercase tracking-[0.35em] font-light leading-relaxed"
+        style={{ color: GOLD }}
+      >
         Graduatorie Provinciali per le Supplenze
       </p>
       <h2 className="text-4xl font-bold text-neutral-900">Percorsi GPS</h2>
@@ -458,7 +479,7 @@ const GPSContent = () => (
         conciliabile con gli impegni lavorativi, per completare il percorso
         senza rinunciare alla propria professione.
       </p>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-3">
         {["Corsi singoli", "Master", "Corsi biennali", "Certificazioni linguistiche"].map((item) => (
           <div
             key={item}
@@ -470,9 +491,7 @@ const GPSContent = () => (
         ))}
       </div>
       <a
-        href="https://www.ncconsultingsrl.it/shop/"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/categorie"
         className="inline-flex items-center gap-3 mt-2 px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-white transition-opacity hover:opacity-80"
         style={{ backgroundColor: GOLD }}
       >
@@ -485,10 +504,10 @@ const GPSContent = () => (
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   return (
-    <main className="bg-white">
+    <main className="bg-white relative">
       <Hero />
 
-      {/* Chi Siamo — team professionale in ufficio moderno */}
+      {/* Chi Siamo */}
       <TextParallaxContent
         imgUrl="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=2670&auto=format&fit=crop"
         subheading="La nostra storia"
@@ -497,7 +516,7 @@ export default function HomePage() {
         <ChiSiamoContent />
       </TextParallaxContent>
 
-      {/* Percorsi GPS — docente universitario in aula magna */}
+      {/* Percorsi GPS */}
       <TextParallaxContent
         imgUrl="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=2574&auto=format&fit=crop"
         subheading="Graduatorie Provinciali per le Supplenze"

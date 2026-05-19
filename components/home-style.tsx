@@ -23,29 +23,29 @@ export const PageShell = ({
 }) => {
   return (
     <main className="bg-white">
-      <section className="relative flex h-[80vh] min-h-150 items-center justify-center overflow-hidden bg-[#080806]">
+      <section className="relative flex h-[60vh] sm:h-[70vh] md:h-[80vh] min-h-80 items-center justify-center overflow-hidden bg-[#080806]">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${imageUrl})` }}
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(250,214,138,0.15),transparent_30%),linear-gradient(180deg,rgba(0,0,0,0.88),rgba(0,0,0,0.95))]" />
-        <div className="relative z-10 px-6 text-center text-white max-w-5xl">
-          <div className="mb-6 inline-flex items-center gap-4 rounded-full border border-white/15 bg-white/5 px-5 py-2 backdrop-blur-sm">
+        <div className="relative z-10 px-4 sm:px-6 text-center text-white max-w-5xl w-full">
+          <div className="mb-4 sm:mb-6 inline-flex items-center gap-4 rounded-full border border-white/15 bg-white/5 px-4 sm:px-5 py-2 backdrop-blur-sm">
             <span className="text-[10px] uppercase tracking-[0.35em] font-semibold" style={{ color: GOLD_LIGHT }}>
               {label}
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
             {title}
           </h1>
-          <p className="mt-6 text-base sm:text-lg md:text-xl text-neutral-200 max-w-3xl mx-auto leading-relaxed">
+          <p className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-neutral-200 max-w-3xl mx-auto leading-relaxed">
             {subtitle}
           </p>
           {ctaText && ctaHref ? (
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
-                href={ctaHref}
-                className="rounded-full bg-[#9A7B3A] px-10 py-4 text-sm uppercase tracking-[0.3em] font-semibold text-white transition hover:bg-[#7a6028]"
+                href=""
+                className="rounded-full bg-[#9A7B3A] px-8 sm:px-10 py-3 sm:py-4 text-sm uppercase tracking-[0.3em] font-semibold text-white transition hover:bg-[#7a6028]"
               >
                 {ctaText}
               </Link>
@@ -54,7 +54,7 @@ export const PageShell = ({
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">{children}</div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">{children}</div>
     </main>
   );
 };

@@ -92,7 +92,7 @@ const DigitalClock: React.FC = () => {
 
 const CustomFooter: React.FC = () => {
 	return (
-		<div className="flex w-full flex-col gap-4 text-[10px] leading-relaxed text-white/60 px-10 md:px-24 py-5 border-t border-white/20">
+		<div className="flex w-full flex-col gap-4 text-[10px] leading-relaxed text-white/60 px-5 sm:px-10 md:px-24 py-5 border-t border-white/20">
 			<div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 				<address className="not-italic space-y-0.5">
 					<p>
@@ -235,14 +235,14 @@ const CurvedNavbar: React.FC<
 			className="h-dvh w-screen max-w-screen-sm fixed right-0 top-0 z-40 bg-black/80 backdrop-blur-sm"
 		>
 			<div className="h-full pt-11 flex flex-col justify-between">
-				<div className="flex flex-col text-5xl gap-3 mt-0 px-10 md:px-24">
+				<div className="flex flex-col text-5xl gap-3 mt-0 px-5 sm:px-10 md:px-24">
 					{/* Logo — width/height set on the wrapper; Image fills it with auto dimensions */}
 					<div className="mb-8 relative w-37.5 h-auto">
 						<Image
 							src="/logo.png"
 							alt="NC Consulting Logo"
 							width={150}
-							height={0}
+							height={150}
 							style={{ width: "150px", height: "auto" }}
 							className="object-contain"
 						/>
