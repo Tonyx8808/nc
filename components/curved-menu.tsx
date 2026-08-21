@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, AnimatePresence, cubicBezier } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 
 interface iNavItem {
 	heading: string;
@@ -43,31 +42,36 @@ const defaultNavItems: iNavItem[] = [
 		heading: "Home",
 		href: "/",
 		subheading: "Torna alla home",
-		imgSrc: "/images/home.jpg",
 	},
 	{
-		heading: "Chi Siamo",
-		href: "/chi-siamo",
-		subheading: "Scopri chi siamo",
-		imgSrc: "/images/about.jpg",
+		heading: "Dispense",
+		href: "/dispense",
+		subheading: "Scarica le dispense",
 	},
 	{
-		heading: "Vantaggi e Assistenza",
-		href: "/vantaggi-e-assistenza",
-		subheading: "Scopri i nostri vantaggi",
-		imgSrc: "/images/vantaggi.jpg",
+		heading: "Download",
+		href: "/download",
+		subheading: "Area download",
 	},
 	{
-		heading: "Categorie",
-		href: "/categorie",
-		subheading: "Visualizza le categorie",
-		imgSrc: "/images/services.jpg",
+		heading: "ccnl",
+		href: "/ccnl",
+		subheading: "Contratti collettivi",
 	},
 	{
-		heading: "Scuola Lavoro",
-		href: "/scuola-lavoro",
-		subheading: "Scopri il programma",
-		imgSrc: "/images/contact.jpg",
+		heading: "Patti Federativi",
+		href: "/patti-federativi",
+		subheading: "Scopri i patti federativi",
+	},
+	{
+		heading: "Iscritti",
+		href: "/iscritti",
+		subheading: "Area iscritti",
+	},
+	{
+		heading: "Convenzioni INPS",
+		href: "/convenzioni-inps",
+		subheading: "Scopri le convenzioni",
 	},
 ];
 
@@ -80,7 +84,7 @@ const DigitalClock: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="rounded-3xl border border-white/20 bg-white/10 px-4 py-2 text-right text-white/90">
+		<div className="rounded-3xl border border-white/10 bg-white/5 px-4 py-2 text-right text-white/90">
 			<span className="text-lg font-semibold">{time.toLocaleTimeString("it-IT", {
 				hour: "2-digit",
 				minute: "2-digit",
@@ -92,20 +96,13 @@ const DigitalClock: React.FC = () => {
 
 const CustomFooter: React.FC = () => {
 	return (
-		<div className="flex w-full flex-col gap-4 text-[10px] leading-relaxed text-white/60 px-5 sm:px-10 md:px-24 py-5 border-t border-white/20">
+		<div className="flex w-full flex-col gap-4 text-[10px] leading-relaxed text-zinc-400 px-5 sm:px-10 md:px-24 py-5 border-t border-white/10">
 			<div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 				<address className="not-italic space-y-0.5">
 					<p>
-						<span className="text-white/40 uppercase tracking-widest text-[9px]">Sede Legale</span>
+						<span className="text-zinc-600 uppercase tracking-widest text-[9px]">Sede Operativa</span>
 						<br />
-						Via Roma, 18 — Torre del Greco (NA)
-					</p>
-					<p className="pt-1.5">
-						<span className="text-white/40 uppercase tracking-widest text-[9px]">Sedi Operative</span>
-						<br />
-						Via Murelle, 11 — Angri (SA)
-						<br />
-						Via Brodolini, 26 — Battipaglia (SA)
+						Via Po, 58 — 88046 Lamezia Terme (CZ)
 					</p>
 				</address>
 				<DigitalClock />
@@ -148,11 +145,11 @@ const NavLink: React.FC<iNavLinkProps> = ({
 			onClick={handleClick}
 			initial="initial"
 			whileHover="whileHover"
-			className="group relative flex items-center justify-between border-b border-white/30 py-4 transition-colors duration-500 md:py-5 uppercase"
+			className="group relative flex items-center justify-between border-b border-white/10 py-4 transition-colors duration-500 hover:border-esaarco-blue/40 md:py-5 uppercase"
 		>
 			<Link ref={ref} onMouseMove={handleMouseMove} href={href} {...linkProps}>
 				<div className="relative flex items-start">
-					<span className="text-white transition-colors duration-500 text-xl font-thin mr-3">
+					<span className="text-esaarco-blue/70 transition-colors duration-500 text-xl font-thin mr-3">
 						{index}.
 					</span>
 					<div className="flex flex-row gap-2">
@@ -194,6 +191,7 @@ const NavLink: React.FC<iNavLinkProps> = ({
 
 const Curve: React.FC = () => {
 	const initialPath = `M100 0 L200 0 L200 ${window.innerHeight} L100 ${window.innerHeight} Q-100 ${window.innerHeight / 2} 100 0`;
+	
 	const targetPath = `M100 0 L200 0 L200 ${window.innerHeight} L100 ${window.innerHeight} Q100 ${window.innerHeight / 2} 100 0`;
 
 	const curve = {
@@ -211,7 +209,7 @@ const Curve: React.FC = () => {
 	return (
 		<svg
 			className="absolute top-0 w-25 h-full"
-			style={{ fill: "#000000", left: "-99px" }}
+			style={{ fill: "var(--esaarco-navy)", left: "-99px" }}
 		>
 			<motion.path
 				variants={curve as any}
@@ -232,23 +230,24 @@ const CurvedNavbar: React.FC<
 			initial="initial"
 			animate="enter"
 			exit="exit"
-			className="h-dvh w-screen max-w-screen-sm fixed right-0 top-0 z-40 bg-black/80 backdrop-blur-sm"
+			className="h-dvh w-screen max-w-screen-sm fixed right-0 top-0 z-40 bg-esaarco-navy/95 backdrop-blur-sm"
 		>
+			{/* Linea arcobaleno brand in alto — stessa del footer */}
+			<div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-esaarco-red via-esaarco-orange to-esaarco-blue z-10" />
+
 			<div className="h-full pt-11 flex flex-col justify-between">
 				<div className="flex flex-col text-5xl gap-3 mt-0 px-5 sm:px-10 md:px-24">
-					{/* Logo — width/height set on the wrapper; Image fills it with auto dimensions */}
-					<div className="mb-8 relative w-37.5 h-auto">
-						<Image
-							src="/logo.png"
-							alt="NC Consulting Logo"
-							width={150}
-							height={150}
-							style={{ width: "150px", height: "auto" }}
-							className="object-contain"
-						/>
+					{/* Brand */}
+					<div className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-2">
+						<h2 className="text-4xl md:text-5xl lg:text-6xl leading-[0.85] tracking-tighter font-medium select-none bg-linear-to-r from-esaarco-red via-esaarco-yellow to-esaarco-blue bg-clip-text text-transparent">
+							ESAARCO
+						</h2>
+						<span className="text-base md:text-lg font-normal text-esaarco-blue tracking-tight relative -top-0.5 md:-top-1">
+							consulting
+						</span>
 					</div>
 
-					<div className="text-white border-b border-white/30 uppercase text-sm mb-0">
+					<div className="text-zinc-500 uppercase tracking-[0.2em] text-[10px] font-medium border-b border-white/10 pb-2 mb-0">
 						<p>Navigazione</p>
 					</div>
 					<section className="bg-transparent mt-0">
@@ -295,17 +294,17 @@ const Header: React.FC<iHeaderProps> = ({
 			<div className="relative">
 				<div
 					onClick={handleClick}
-					className="fixed -right-1 top-0 md:-right-1 m-5 z-50 w-12 h-12 rounded-none flex items-center justify-center cursor-pointer bg-[#080806] border border-white/20"
+					className="fixed -right-1 top-0 md:-right-1 m-5 z-50 w-12 h-12 rounded-none flex items-center justify-center cursor-pointer bg-esaarco-navy border border-white/15"
 				>
 					<div className="relative w-8 h-6 flex flex-col justify-between items-center">
 						<span
-							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "rotate-45 translate-y-2 bg-[#E8D5A3]" : "bg-[#C4A054]"}`}
+							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "rotate-45 translate-y-2 bg-esaarco-blue" : "bg-white"}`}
 						></span>
 						<span
-							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "opacity-0 bg-[#E8D5A3]" : "bg-[#C4A054]"}`}
+							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "opacity-0 bg-esaarco-blue" : "bg-white"}`}
 						></span>
 						<span
-							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "-rotate-45 -translate-y-3 bg-[#E8D5A3]" : "bg-[#C4A054]"}`}
+							className={`block h-0.5 w-7 transition-all duration-300 ${isActive ? "-rotate-45 -translate-y-3 bg-esaarco-blue" : "bg-white"}`}
 						></span>
 					</div>
 				</div>

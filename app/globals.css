@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./accessibility.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -38,6 +39,16 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
+
+    /* Colori brand ESAARCO estratti dal logo */
+    --color-esaarco-navy: var(--esaarco-navy);
+    --color-esaarco-red: var(--esaarco-red);
+    --color-esaarco-orange: var(--esaarco-orange);
+    --color-esaarco-yellow: var(--esaarco-yellow);
+    --color-esaarco-green: var(--esaarco-green);
+    --color-esaarco-blue: var(--esaarco-blue);
+    --color-esaarco-grey: var(--esaarco-grey);
+
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -48,72 +59,99 @@
 }
 
 :root {
+    /* --- Palette brand presa dal logo E.S.A.A.R.C.O. --- */
+    --esaarco-navy: #1B2740;      /* testo "E.S.A.A.R.C.O." / "CONFEDERAZIONE" */
+    --esaarco-red: #E32726;       /* primo arco */
+    --esaarco-orange: #F5A623;    /* secondo arco */
+    --esaarco-yellow: #FFD200;    /* terzo arco */
+    --esaarco-green: #3AA845;     /* quarto arco */
+    --esaarco-blue: #29A9E1;      /* quinto arco */
+    --esaarco-grey: #B5B7BA;      /* archi sfumati grigi sullo sfondo */
+
     --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+    --foreground: #1B2740;
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
+    --card-foreground: #1B2740;
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
+    --popover-foreground: #1B2740;
+
+    --primary: #1B2740;
     --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
+    --secondary: #F2F3F4;
+    --secondary-foreground: #1B2740;
+    --muted: #F2F3F4;
+    --muted-foreground: #6B7280;
+    --accent: #29A9E1;
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: #E32726;
+
+    --border: #E2E4E7;
+    --input: #E2E4E7;
+    --ring: #29A9E1;
+
+    /* Chart / decorazioni ad arco: stesso ordine cromatico del logo */
+    --chart-1: #E32726;
+    --chart-2: #F5A623;
+    --chart-3: #FFD200;
+    --chart-4: #3AA845;
+    --chart-5: #29A9E1;
+
     --radius: 0.625rem;
+
     --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-foreground: #1B2740;
+    --sidebar-primary: #1B2740;
     --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --sidebar-accent: #F2F3F4;
+    --sidebar-accent-foreground: #1B2740;
+    --sidebar-border: #E2E4E7;
+    --sidebar-ring: #29A9E1;
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
+    --esaarco-navy: #E9ECF2;
+    --esaarco-red: #FF5452;
+    --esaarco-orange: #FFB84D;
+    --esaarco-yellow: #FFDD4D;
+    --esaarco-green: #5FCB6B;
+    --esaarco-blue: #5CC3F0;
+    --esaarco-grey: #7C7F84;
+
+    --background: #10151F;
+    --foreground: #E9ECF2;
+    --card: #182233;
+    --card-foreground: #E9ECF2;
+    --popover: #182233;
+    --popover-foreground: #E9ECF2;
+
+    --primary: #E9ECF2;
+    --primary-foreground: #10151F;
+    --secondary: #212B3C;
+    --secondary-foreground: #E9ECF2;
+    --muted: #212B3C;
+    --muted-foreground: #9CA3AF;
+    --accent: #5CC3F0;
+    --accent-foreground: #10151F;
+    --destructive: #FF5452;
+
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --ring: #5CC3F0;
+
+    --chart-1: #FF5452;
+    --chart-2: #FFB84D;
+    --chart-3: #FFDD4D;
+    --chart-4: #5FCB6B;
+    --chart-5: #5CC3F0;
+
+    --sidebar: #182233;
+    --sidebar-foreground: #E9ECF2;
+    --sidebar-primary: #5CC3F0;
+    --sidebar-primary-foreground: #10151F;
+    --sidebar-accent: #212B3C;
+    --sidebar-accent-foreground: #E9ECF2;
     --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --sidebar-ring: #5CC3F0;
 }
 
 @layer base {
@@ -128,13 +166,13 @@
     }
 }
 
-/*-----------------SCROLLBAR PREMIUM ORO------------------------------*/
+/*-----------------SCROLLBAR PREMIUM ESAARCO------------------------------*/
 
 /*FIREFOX*/
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: #9A7B3A #0d0b07;
+  scrollbar-color: #29A9E1 #0d1420;
 }
 
 /*chrome / safari / edge*/
@@ -144,14 +182,30 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d0b07;
+  background: #0d1420;
 }
 
 ::-webkit-scrollbar-thumb{
-  background: linear-gradient(180deg, #E8D5A3 0%, #C4A054 30%, #9A7B3A 70%, #6b5520 100%);
+  background: linear-gradient(180deg, #E32726 0%, #F5A623 25%, #FFD200 50%, #3AA845 75%, #29A9E1 100%);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background:  linear-gradient(180deg, #E8D5A3 0%, #C4A054 100%);
+  background: linear-gradient(180deg, #FF5452 0%, #29A9E1 100%);
+}
+
+/*Marquee*/
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@layer utilities {
+  .animate-marquee-vertical {
+    animation: marquee-vertical var(--duration, 30s) linear infinite;
+  }
 }
