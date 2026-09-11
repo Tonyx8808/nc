@@ -1,63 +1,48 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const Code = require("../models/Code");
 const userAuth = require("../middleware/userAuth");
+const { sendCodeEmail } = require("../utils/mailer");
 
 const router = express.Router();
 
 /**
- * POST /api/login
- * Body: { code }
- * Se il codice esiste e non è ancora stato usato: lo marca used=true
- * e restituisce un token JWT utente valido 2 ore.
- * Risposta: { token }
+ * POST /api/request-code
+ * Body: { nome, cognome, email }
+ * Genera un nuovo codice, lo salva associato ai dati dello studente,
+ * e lo invia via email. Non restituisce mai il codice nella risposta.
  */
-router.post("/login", async (req, res) => {
+router.post("/request-code", async (req, res) => {
   try {
-    const { code } = req.body;
+    const { nome, cognome, email } = req.body;
 
-    if (!code) {
-      return res.status(400).json({ error: "Codice mancante." });
+    if (!nome || !cognome || !email) {
+      return res.status(400).json({ error: "Nome, cognome ed email sono obbligatori." });
     }
 
-    const normalized = code.trim().toLowerCase();
-    const foundCode = await Code.findOne({ code: normalized });
-
-    if (!foundCode) {
-      return res.status(401).json({ error: "Codice non valido." });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Indirizzo email non valido." });
     }
 
-    if (foundCode.used) {
-      return res.status(401).json({ error: "Codice già utilizzato." });
-    }
+    const code = crypto.randomBytes(4).toString("hex");
 
-    foundCode.used = true;
-    await foundCode.save();
-
-    const token = jwt.sign({ code: foundCode.code, role: "user" }, process.env.JWT_SECRET, {
-      expiresIn: "2h",
+    const newCode = new Code({
+      code,
+      nome: nome.trim(),
+      cognome: cognome.trim(),
+      email: email.trim().toLowerCase(),
     });
+    await newCode.save();
 
-    res.json({ token });
+    await sendCodeEmail({ to: newCode.email, nome: newCode.nome, code });
+
+    res.json({ message: "Codice inviato. Controlla la tua email." });
   } catch (err) {
-    console.error("Errore login utente:", err);
-    res.status(500).json({ error: "Errore del server." });
+    console.error("Errore invio codice:", err);
+    res.status(500).json({ error: "Errore durante l'invio del codice. Riprova più tardi." });
   }
 });
 
-/**
- * GET /api/protected
- * Esempio di rotta protetta da userAuth: qui puoi restituire
- * la vera lista di file/dispense scaricabili una volta autenticati.
- * Non richiesta esplicitamente nelle specifiche, ma utile come
- * dimostrazione di come usare il middleware userAuth sulle API reali.
- */
-router.get("/protected", userAuth, async (req, res) => {
-  res.json({
-    message: "Accesso consentito.",
-    code: req.user.code,
-  });
-});
-
-module.exports = router;

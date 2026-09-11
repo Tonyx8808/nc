@@ -8,6 +8,19 @@ const CodeSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
   },
+  nome: {
+    type: String,
+    trim: true,
+  },
+  cognome: {
+    type: String,
+    trim: true,
+  },
+  email: {
+    type: String,
+    trim: true,
+    lowercase: true,
+  },
   used: {
     type: Boolean,
     default: false,
