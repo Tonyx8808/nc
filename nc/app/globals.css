@@ -1,0 +1,211 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./accessibility.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+
+    /* Colori brand ESAARCO estratti dal logo */
+    --color-esaarco-navy: var(--esaarco-navy);
+    --color-esaarco-red: var(--esaarco-red);
+    --color-esaarco-orange: var(--esaarco-orange);
+    --color-esaarco-yellow: var(--esaarco-yellow);
+    --color-esaarco-green: var(--esaarco-green);
+    --color-esaarco-blue: var(--esaarco-blue);
+    --color-esaarco-grey: var(--esaarco-grey);
+
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    /* --- Palette brand presa dal logo E.S.A.A.R.C.O. --- */
+    --esaarco-navy: #1B2740;      /* testo "E.S.A.A.R.C.O." / "CONFEDERAZIONE" */
+    --esaarco-red: #E32726;       /* primo arco */
+    --esaarco-orange: #F5A623;    /* secondo arco */
+    --esaarco-yellow: #FFD200;    /* terzo arco */
+    --esaarco-green: #3AA845;     /* quarto arco */
+    --esaarco-blue: #29A9E1;      /* quinto arco */
+    --esaarco-grey: #B5B7BA;      /* archi sfumati grigi sullo sfondo */
+
+    --background: oklch(1 0 0);
+    --foreground: #1B2740;
+    --card: oklch(1 0 0);
+    --card-foreground: #1B2740;
+    --popover: oklch(1 0 0);
+    --popover-foreground: #1B2740;
+
+    --primary: #1B2740;
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: #F2F3F4;
+    --secondary-foreground: #1B2740;
+    --muted: #F2F3F4;
+    --muted-foreground: #6B7280;
+    --accent: #29A9E1;
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: #E32726;
+
+    --border: #E2E4E7;
+    --input: #E2E4E7;
+    --ring: #29A9E1;
+
+    /* Chart / decorazioni ad arco: stesso ordine cromatico del logo */
+    --chart-1: #E32726;
+    --chart-2: #F5A623;
+    --chart-3: #FFD200;
+    --chart-4: #3AA845;
+    --chart-5: #29A9E1;
+
+    --radius: 0.625rem;
+
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: #1B2740;
+    --sidebar-primary: #1B2740;
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: #F2F3F4;
+    --sidebar-accent-foreground: #1B2740;
+    --sidebar-border: #E2E4E7;
+    --sidebar-ring: #29A9E1;
+}
+
+.dark {
+    --esaarco-navy: #E9ECF2;
+    --esaarco-red: #FF5452;
+    --esaarco-orange: #FFB84D;
+    --esaarco-yellow: #FFDD4D;
+    --esaarco-green: #5FCB6B;
+    --esaarco-blue: #5CC3F0;
+    --esaarco-grey: #7C7F84;
+
+    --background: #10151F;
+    --foreground: #E9ECF2;
+    --card: #182233;
+    --card-foreground: #E9ECF2;
+    --popover: #182233;
+    --popover-foreground: #E9ECF2;
+
+    --primary: #E9ECF2;
+    --primary-foreground: #10151F;
+    --secondary: #212B3C;
+    --secondary-foreground: #E9ECF2;
+    --muted: #212B3C;
+    --muted-foreground: #9CA3AF;
+    --accent: #5CC3F0;
+    --accent-foreground: #10151F;
+    --destructive: #FF5452;
+
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: #5CC3F0;
+
+    --chart-1: #FF5452;
+    --chart-2: #FFB84D;
+    --chart-3: #FFDD4D;
+    --chart-4: #5FCB6B;
+    --chart-5: #5CC3F0;
+
+    --sidebar: #182233;
+    --sidebar-foreground: #E9ECF2;
+    --sidebar-primary: #5CC3F0;
+    --sidebar-primary-foreground: #10151F;
+    --sidebar-accent: #212B3C;
+    --sidebar-accent-foreground: #E9ECF2;
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: #5CC3F0;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+
+/*-----------------SCROLLBAR PREMIUM ESAARCO------------------------------*/
+
+/*FIREFOX*/
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #29A9E1 #0d1420;
+}
+
+/*chrome / safari / edge*/
+
+::-webkit-scrollbar{
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d1420;
+}
+
+::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, #E32726 0%, #F5A623 25%, #FFD200 50%, #3AA845 75%, #29A9E1 100%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF5452 0%, #29A9E1 100%);
+}
+
+/*Marquee*/
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@layer utilities {
+  .animate-marquee-vertical {
+    animation: marquee-vertical var(--duration, 30s) linear infinite;
+  }
+}
