@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DOWNLOAD_DOCS } from "@/lib/download-data";
+import {downloadProtectedFile} from "@/lib/protected-download";
 
 /**
  * app/download/page.tsx
@@ -198,29 +199,34 @@ const DownloadGrid = () => (
                 <p className="mt-3 flex-1 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
                   {d.description}
                 </p>
+               <button
+  type="button"
+  onClick={() =>
+    downloadProtectedFile(
+      `/api/download/${d.file.split("/").pop()!}`,
+      d.file.split("/").pop()!
+    )
+  }
+  className={cn(
+    MONO,
+    "mt-6 inline-flex items-center justify-center gap-2 self-start rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-colors"
+  )}
+  style={{ borderColor: HAIRLINE, color: NAVY }}
+  onMouseEnter={(e) => {
+    (e.currentTarget as HTMLElement).style.backgroundColor = NAVY;
+    (e.currentTarget as HTMLElement).style.color = "#fff";
+    (e.currentTarget as HTMLElement).style.borderColor = NAVY;
+  }}
+  onMouseLeave={(e) => {
+    (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+    (e.currentTarget as HTMLElement).style.color = NAVY;
+    (e.currentTarget as HTMLElement).style.borderColor = HAIRLINE;
+  }}
+>
+  <DownloadIcon />
+  Download Gratis
+</button>
 
-                <a
-                  href={d.file}
-                  download
-                  className={cn(
-                    MONO,
-                    "mt-6 inline-flex items-center justify-center gap-2 self-start rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-colors"
-                  )}
-                  style={{ borderColor: HAIRLINE, color: NAVY }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.backgroundColor = NAVY;
-                    (e.currentTarget as HTMLElement).style.color = "#fff";
-                    (e.currentTarget as HTMLElement).style.borderColor = NAVY;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
-                    (e.currentTarget as HTMLElement).style.color = NAVY;
-                    (e.currentTarget as HTMLElement).style.borderColor = HAIRLINE;
-                  }}
-                >
-                  <DownloadIcon />
-                  Download Gratis
-                </a>
               </div>
             </FadeUp>
           );

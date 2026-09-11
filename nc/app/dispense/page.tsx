@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DISPENSE } from "@/lib/dispense-data";
+import {downloadProtectedFile} from "@/lib/protected-download";
 
 /**
  * app/dispense/page.tsx
@@ -210,9 +211,16 @@ const DispenseGrid = () => (
                   {d.description}
                 </p>
 
-                <a
-                  href={d.file}
-                  download
+                              <button
+                  type="button"
+  onClick={() =>
+  downloadProtectedFile(
+    `/api/dispense/${d.file.split("/").pop()!}`,
+    d.file.split("/").pop()!
+  )
+}
+
+
                   className={cn(
                     MONO,
                     "mt-6 inline-flex items-center justify-center gap-2 self-start rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-colors"
@@ -231,7 +239,7 @@ const DispenseGrid = () => (
                 >
                   <DownloadIcon />
                   Scarica
-                </a>
+                </button>
               </div>
             </FadeUp>
           );

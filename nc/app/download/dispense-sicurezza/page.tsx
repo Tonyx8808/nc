@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DISPENSE_SICUREZZA } from "@/lib/dispense-sicurezza-data";
+import {downloadProtectedFile} from "@/lib/protected-download";
 
 /**
  * app/download/dispense-sicurezza/page.tsx
@@ -191,20 +192,25 @@ const DispenseGrid = () => (
                   {d.description}
                 </p>
 
-                <a
-                  href={d.file}
-                  download
+                             <button
+        onClick={() =>
+  downloadProtectedFile(
+    `/api/dispense-sicurezza/${d.file.split("/").pop()!}`,
+    d.file.split("/").pop()!
+  )
+}
+
                   className={cn(
                     MONO,
                     "mt-6 inline-flex items-center justify-center gap-2 self-start rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-colors"
                   )}
                   style={{ borderColor: HAIRLINE, color: NAVY }}
-                  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.currentTarget.style.backgroundColor = NAVY;
                     e.currentTarget.style.color = "#fff";
                     e.currentTarget.style.borderColor = NAVY;
                   }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.currentTarget.style.backgroundColor = "transparent";
                     e.currentTarget.style.color = NAVY;
                     e.currentTarget.style.borderColor = HAIRLINE;
@@ -212,7 +218,7 @@ const DispenseGrid = () => (
                 >
                   <DownloadIcon />
                   Scarica
-                </a>
+                </button>
               </div>
             </FadeUp>
           );
