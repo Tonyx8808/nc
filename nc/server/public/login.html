@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Accedi con codice</title>
+<title>Accedi</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -24,35 +24,14 @@
     box-shadow: 0 20px 50px -20px rgba(21, 32, 54, 0.25);
     text-align: center;
   }
-  h1 {
-    margin: 0 0 6px;
-    font-size: 22px;
-    color: #1B2740;
-  }
-  p.subtitle {
-    margin: 0 0 28px;
-    color: #616B7D;
-    font-size: 14px;
-  }
-  label {
-    display: block;
-    text-align: left;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #616B7D;
-    margin-bottom: 6px;
-  }
+  h1 { margin: 0 0 6px; font-size: 22px; color: #1B2740; }
+  p.subtitle { margin: 0 0 28px; color: #616B7D; font-size: 14px; }
   input {
     width: 100%;
     padding: 14px;
     border: 1px solid #E4E4DE;
     border-radius: 10px;
-    font-size: 20px;
-    font-family: monospace;
-    letter-spacing: 0.15em;
-    text-align: center;
-    text-transform: lowercase;
+    font-size: 16px;
     margin-bottom: 18px;
     outline: none;
   }
@@ -67,38 +46,19 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s;
   }
   button:hover { opacity: 0.9; }
   button:disabled { opacity: 0.6; cursor: not-allowed; }
-  .error {
-    color: #E32726;
-    font-size: 13px;
-    margin: -8px 0 16px;
-    min-height: 16px;
-  }
-  .success {
-    color: #3AA845;
-    font-size: 14px;
-    margin-top: 16px;
-  }
+  .error { color: #E32726; font-size: 13px; margin: -8px 0 16px; min-height: 16px; }
+  .success { color: #3AA845; font-size: 14px; margin-top: 16px; }
 </style>
 </head>
 <body>
-  <form class="card" id="codeForm">
+  <form class="card" id="loginForm">
     <h1>Area riservata</h1>
-    <p class="subtitle">Inserisci il codice di accesso ricevuto</p>
+    <p class="subtitle">Inserisci la password di accesso</p>
 
-    <label for="code">Codice</label>
-    <input
-      type="text"
-      id="code"
-      name="code"
-      maxlength="8"
-      placeholder="es. a1b2c3d4"
-      autocomplete="off"
-      required
-    />
+    <input type="password" id="password" placeholder="Password" autocomplete="off" required />
 
     <div class="error" id="errorMsg"></div>
 
@@ -107,7 +67,7 @@
   </form>
 
   <script>
-    const form = document.getElementById("codeForm");
+    const form = document.getElementById("loginForm");
     const errorMsg = document.getElementById("errorMsg");
     const successMsg = document.getElementById("successMsg");
     const submitBtn = document.getElementById("submitBtn");
@@ -119,15 +79,14 @@
       submitBtn.disabled = true;
       submitBtn.textContent = "Verifica in corso...";
 
-      const code = document.getElementById("code").value.trim();
+      const password = document.getElementById("password").value;
 
       try {
         const res = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ password }),
         });
-
         const data = await res.json();
 
         if (!res.ok) {
@@ -137,11 +96,8 @@
           return;
         }
 
-        // Salva il token utente: usalo come Bearer token per chiamare
-        // le API protette da userAuth (es. /api/protected)
         localStorage.setItem("userToken", data.token);
-
-        successMsg.textContent = "Accesso effettuato! Puoi ora consultare i contenuti riservati.";
+        successMsg.textContent = "Accesso effettuato!";
         successMsg.style.display = "block";
         submitBtn.textContent = "Accesso effettuato";
       } catch (err) {

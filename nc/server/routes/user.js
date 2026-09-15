@@ -1,20 +1,20 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 
-const Code = require("../models/Code");
+const Richiesta = require("../models/Richiesta");
+const Settings = require("../models/Settings");
 const userAuth = require("../middleware/userAuth");
-const { sendCodeEmail } = require("../utils/mailer");
 
 const router = express.Router();
 
 /**
- * POST /api/request-code
+ * POST /api/richieste
  * Body: { nome, cognome, email }
- * Genera un nuovo codice, lo salva associato ai dati dello studente,
- * e lo invia via email. Non restituisce mai il codice nella risposta.
+ * Crea una richiesta di accesso in attesa. NON invia nessuna email:
+ * l'admin controlla manualmente (sul cartaceo) se lo studente è
+ * davvero iscritto, poi decide se inviare la password dalla dashboard.
  */
-router.post("/request-code", async (req, res) => {
+router.post("/richieste", async (req, res) => {
   try {
     const { nome, cognome, email } = req.body;
 
@@ -27,22 +27,65 @@ router.post("/request-code", async (req, res) => {
       return res.status(400).json({ error: "Indirizzo email non valido." });
     }
 
-    const code = crypto.randomBytes(4).toString("hex");
-
-    const newCode = new Code({
-      code,
+    const richiesta = new Richiesta({
       nome: nome.trim(),
       cognome: cognome.trim(),
       email: email.trim().toLowerCase(),
     });
-    await newCode.save();
+    await richiesta.save();
 
-    await sendCodeEmail({ to: newCode.email, nome: newCode.nome, code });
-
-    res.json({ message: "Codice inviato. Controlla la tua email." });
+    res.json({
+      message:
+        "Richiesta ricevuta. Se risulti iscritto presso la nostra sede, riceverai la password di accesso via email.",
+    });
   } catch (err) {
-    console.error("Errore invio codice:", err);
-    res.status(500).json({ error: "Errore durante l'invio del codice. Riprova più tardi." });
+    console.error("Errore creazione richiesta:", err);
+    res.status(500).json({ error: "Errore del server. Riprova più tardi." });
   }
 });
 
+/**
+ * POST /api/login
+ * Body: { password }
+ * Verifica la password unica di accesso (condivisa tra tutti gli
+ * studenti abilitati). Non è monouso: resta valida finché l'admin
+ * non la cambia dalla dashboard.
+ * Risposta: { token }
+ */
+router.post("/login", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ error: "Password mancante." });
+    }
+
+    const settings = await Settings.findOne();
+    if (!settings) {
+      return res.status(500).json({ error: "Password di accesso non ancora configurata. Contatta l'amministratore." });
+    }
+
+    if (password.trim() !== settings.accessPassword) {
+      return res.status(401).json({ error: "Password non valida." });
+    }
+
+    const token = jwt.sign({ role: "user" }, process.env.JWT_SECRET, {
+      expiresIn: "12h",
+    });
+
+    res.json({ token });
+  } catch (err) {
+    console.error("Errore login utente:", err);
+    res.status(500).json({ error: "Errore del server." });
+  }
+});
+
+/**
+ * GET /api/protected
+ * Esempio di rotta protetta da userAuth.
+ */
+router.get("/protected", userAuth, async (req, res) => {
+  res.json({ message: "Accesso consentito." });
+});
+
+module.exports = router;

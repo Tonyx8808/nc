@@ -18,29 +18,29 @@ const transporter = nodemailer.createTransport({
 });
 
 /**
- * Invia il codice di accesso via email allo studente.
+ * Invia la password di accesso allo studente, dopo che l'admin ha
+ * verificato manualmente che risulta iscritto.
  */
-async function sendCodeEmail({ to, nome, code }) {
+async function sendAccessPasswordEmail({ to, nome, password }) {
   const fromAddress = process.env.MAIL_FROM || process.env.SMTP_USER;
 
   await transporter.sendMail({
     from: `"ES.A.AR.CO." <${fromAddress}>`,
     to,
-    subject: "Il tuo codice di accesso ES.A.AR.CO.",
-    text: `Ciao ${nome || ""},\n\nEcco il tuo codice di accesso per scaricare dispense e documenti dal sito ES.A.AR.CO.:\n\n${code}\n\nInseriscilo nella pagina di accesso per continuare.\n\nIl codice è monouso: una volta utilizzato non sarà più valido.\n\nES.A.AR.CO. Confederazione`,
+    subject: "La tua password di accesso ES.A.AR.CO.",
+    text: `Ciao ${nome || ""},\n\nAbbiamo verificato la tua iscrizione. Ecco la password per accedere all'area riservata e scaricare dispense e documenti dal sito ES.A.AR.CO.:\n\n${password}\n\nInseriscila nella pagina di accesso per continuare.\n\nES.A.AR.CO. Confederazione`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto;">
-        <h2 style="color: #1B2740;">Il tuo codice di accesso</h2>
+        <h2 style="color: #1B2740;">La tua password di accesso</h2>
         <p>Ciao ${nome || ""},</p>
-        <p>Ecco il tuo codice per scaricare dispense e documenti dal sito ES.A.AR.CO.:</p>
+        <p>Abbiamo verificato la tua iscrizione. Ecco la password per accedere all'area riservata e scaricare dispense e documenti dal sito ES.A.AR.CO.:</p>
         <p style="font-size: 28px; font-weight: bold; letter-spacing: 4px; background: #FAFAF8; border: 1px dashed #29A9E1; padding: 16px; text-align: center; color: #1B2740;">
-          ${code}
+          ${password}
         </p>
-        <p style="font-size: 13px; color: #616B7D;">Il codice è monouso: una volta utilizzato non sarà più valido.</p>
         <p style="font-size: 13px; color: #616B7D;">ES.A.AR.CO. Confederazione</p>
       </div>
     `,
   });
 }
 
-module.exports = { sendCodeEmail };
+module.exports = { sendAccessPasswordEmail };

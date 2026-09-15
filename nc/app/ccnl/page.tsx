@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CCNL_LIST } from "@/lib/ccnl-data";
+import {downloadProtectedFile} from "@/lib/protected-download"
 
 /**
  * app/ccnl/page.tsx
@@ -222,13 +223,12 @@ const CcnlGrid = () => (
                 <p className="mt-3 flex-1 text-sm leading-relaxed" style={{ color: INK_MUTED }}>
                   {d.description}
                 </p>
-
-                <a
-                  href={d.file}
-                  download
+                               <button
+                  type="button"
+                  onClick={() => downloadProtectedFile(`/api/ccnl/${d.file.split("/").pop()}`, d.file.split("/").pop()!)}
                   className={cn(
                     MONO,
-                    "mt-6 inline-flex items-center justify-center gap-2 self-start rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-colors"
+                    "inline-flex shrink-0 items-center gap-2 self-start rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-colors sm:self-auto"
                   )}
                   style={{ borderColor: HAIRLINE, color: NAVY }}
                   onMouseEnter={(e) => {
@@ -243,8 +243,8 @@ const CcnlGrid = () => (
                   }}
                 >
                   <DownloadIcon />
-                  Download Gratis
-                </a>
+                  Download
+                </button>
               </div>
             </FadeUp>
           );

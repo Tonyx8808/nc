@@ -33,7 +33,7 @@
   header button:hover { background: rgba(255,255,255,0.1); }
 
   main {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 32px 24px 64px;
   }
@@ -55,35 +55,33 @@
     color: #616B7D;
   }
 
-  .generate-row {
+  .password-row {
     display: flex;
     gap: 12px;
     align-items: center;
     flex-wrap: wrap;
   }
-  .generate-row button {
+  .password-row input {
+    font-family: monospace;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    padding: 10px 14px;
+    border: 1px solid #E4E4DE;
+    border-radius: 10px;
+    min-width: 220px;
+  }
+  .password-row button, .action-btn {
     background: #1B2740;
     color: #fff;
     border: none;
-    padding: 12px 20px;
+    padding: 10px 18px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
   }
-  .generate-row button:hover { opacity: 0.9; }
-  .generate-row button:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .new-code-box {
-    font-family: monospace;
-    font-size: 20px;
-    letter-spacing: 0.1em;
-    background: #FAFAF8;
-    border: 1px dashed #29A9E1;
-    color: #1B2740;
-    padding: 10px 16px;
-    border-radius: 10px;
-  }
+  .password-row button:hover, .action-btn:hover { opacity: 0.9; }
+  .password-row button:disabled, .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
   table {
     width: 100%;
@@ -94,16 +92,13 @@
     text-align: left;
     padding: 10px 12px;
     border-bottom: 1px solid #E4E4DE;
+    vertical-align: middle;
   }
   th {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #616B7D;
-  }
-  td.code-cell {
-    font-family: monospace;
-    font-weight: 600;
   }
   .badge {
     display: inline-flex;
@@ -116,8 +111,8 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-  .badge.used { background: rgba(227,39,38,0.1); color: #E32726; }
-  .badge.unused { background: rgba(58,168,69,0.1); color: #3AA845; }
+  .badge.inviata { background: rgba(58,168,69,0.1); color: #3AA845; }
+  .badge.attesa { background: rgba(245,166,35,0.15); color: #F5A623; }
 
   .empty {
     color: #616B7D;
@@ -125,45 +120,49 @@
     padding: 20px 0;
     text-align: center;
   }
-  .error {
-    color: #E32726;
+  .error, .success {
     font-size: 13px;
     margin-top: 12px;
   }
+  .error { color: #E32726; }
+  .success { color: #3AA845; }
 </style>
 </head>
 <body>
   <header>
-    <h1>Pannello Admin — Gestione Codici</h1>
+    <h1>Pannello Admin — ES.A.AR.CO.</h1>
     <button id="logoutBtn">Esci</button>
   </header>
 
   <main>
     <section class="panel">
-      <h2>Genera un nuovo codice</h2>
-      <p class="hint">Crea un codice hex casuale di 8 caratteri, monouso.</p>
-      <div class="generate-row">
-        <button id="generateBtn">+ Genera codice</button>
-        <span class="new-code-box" id="newCodeBox" style="display: none;"></span>
+      <h2>Password di accesso unica</h2>
+      <p class="hint">Questa è la password che verrà inviata a chi risulta iscritto. Puoi cambiarla in qualsiasi momento: da quel momento la vecchia password non funzionerà più.</p>
+      <div class="password-row">
+        <input type="text" id="passwordInput" placeholder="Password di accesso" />
+        <button id="savePasswordBtn">Salva password</button>
       </div>
-      <div class="error" id="generateError"></div>
+      <div class="error" id="passwordError"></div>
+      <div class="success" id="passwordSuccess"></div>
     </section>
 
     <section class="panel">
-      <h2>Elenco codici</h2>
-      <p class="hint">Tutti i codici generati, dal più recente.</p>
+      <h2>Richieste di accesso</h2>
+      <p class="hint">Controlla sul cartaceo se la persona risulta iscritta presso la vostra sede, poi clicca "Invia password" solo se confermato.</p>
       <div id="tableWrapper">
         <table>
           <thead>
             <tr>
-              <th>Codice</th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Richiesta il</th>
               <th>Stato</th>
-              <th>Creato il</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody id="codesTableBody"></tbody>
+          <tbody id="richiesteTableBody"></tbody>
         </table>
-        <div class="empty" id="emptyMsg" style="display: none;">Nessun codice generato finora.</div>
+        <div class="empty" id="emptyMsg" style="display: none;">Nessuna richiesta ricevuta finora.</div>
       </div>
       <div class="error" id="listError"></div>
     </section>
@@ -188,104 +187,130 @@
     function formatDate(iso) {
       const d = new Date(iso);
       return d.toLocaleString("it-IT", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+        day: "2-digit", month: "2-digit", year: "numeric",
+        hour: "2-digit", minute: "2-digit",
       });
     }
 
-    async function loadCodes() {
+    function handleAuthError(res) {
+      if (res.status === 401 || res.status === 403) {
+        localStorage.removeItem("adminToken");
+        window.location.href = "/admin/login.html";
+        return true;
+      }
+      return false;
+    }
+
+    // ── Password unica ──────────────────────────────────────────────
+    async function loadPassword() {
+      const res = await fetch("/api/admin/password", { headers: authHeaders });
+      if (handleAuthError(res)) return;
+      const data = await res.json();
+      document.getElementById("passwordInput").value = data.accessPassword || "";
+    }
+
+    document.getElementById("savePasswordBtn").addEventListener("click", async () => {
+      const btn = document.getElementById("savePasswordBtn");
+      const passwordError = document.getElementById("passwordError");
+      const passwordSuccess = document.getElementById("passwordSuccess");
+      const value = document.getElementById("passwordInput").value.trim();
+
+      passwordError.textContent = "";
+      passwordSuccess.textContent = "";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("/api/admin/password", {
+          method: "POST",
+          headers: authHeaders,
+          body: JSON.stringify({ password: value }),
+        });
+        if (handleAuthError(res)) return;
+        const data = await res.json();
+
+        if (!res.ok) {
+          passwordError.textContent = data.error || "Errore nel salvataggio.";
+        } else {
+          passwordSuccess.textContent = "Password aggiornata correttamente.";
+        }
+      } catch (err) {
+        passwordError.textContent = "Impossibile contattare il server.";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // ── Richieste ────────────────────────────────────────────────────
+    async function loadRichieste() {
       const listError = document.getElementById("listError");
-      const tbody = document.getElementById("codesTableBody");
+      const tbody = document.getElementById("richiesteTableBody");
       const emptyMsg = document.getElementById("emptyMsg");
       listError.textContent = "";
 
       try {
-        const res = await fetch("/api/admin/list-codes", { headers: authHeaders });
-
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem("adminToken");
-          window.location.href = "/admin/login.html";
-          return;
-        }
-
-        const codes = await res.json();
+        const res = await fetch("/api/admin/richieste", { headers: authHeaders });
+        if (handleAuthError(res)) return;
+        const richieste = await res.json();
 
         if (!res.ok) {
-          listError.textContent = codes.error || "Errore nel caricamento dei codici.";
+          listError.textContent = richieste.error || "Errore nel caricamento.";
           return;
         }
 
         tbody.innerHTML = "";
 
-        if (codes.length === 0) {
+        if (richieste.length === 0) {
           emptyMsg.style.display = "block";
           return;
         }
-
         emptyMsg.style.display = "none";
 
-        codes.forEach((c) => {
+        richieste.forEach((r) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td class="code-cell">${c.code}</td>
+            <td>${r.nome} ${r.cognome}</td>
+            <td>${r.email}</td>
+            <td>${formatDate(r.createdAt)}</td>
+            <td><span class="badge ${r.inviata ? "inviata" : "attesa"}">${r.inviata ? "Inviata" : "In attesa"}</span></td>
             <td>
-              <span class="badge ${c.used ? "used" : "unused"}">
-                ${c.used ? "Usato" : "Disponibile"}
-              </span>
+              ${r.inviata ? "" : `<button class="action-btn" data-id="${r._id}">Invia password</button>`}
             </td>
-            <td>${formatDate(c.createdAt)}</td>
           `;
           tbody.appendChild(tr);
+        });
+
+        document.querySelectorAll(".action-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            btn.textContent = "Invio...";
+            try {
+              const res = await fetch(`/api/admin/richieste/${btn.dataset.id}/invia`, {
+                method: "POST",
+                headers: authHeaders,
+              });
+              if (handleAuthError(res)) return;
+              if (!res.ok) {
+                const data = await res.json();
+                alert(data.error || "Errore nell'invio.");
+                btn.disabled = false;
+                btn.textContent = "Invia password";
+                return;
+              }
+              loadRichieste();
+            } catch (err) {
+              alert("Impossibile contattare il server.");
+              btn.disabled = false;
+              btn.textContent = "Invia password";
+            }
+          });
         });
       } catch (err) {
         listError.textContent = "Impossibile contattare il server.";
       }
     }
 
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const btn = document.getElementById("generateBtn");
-      const newCodeBox = document.getElementById("newCodeBox");
-      const generateError = document.getElementById("generateError");
-
-      btn.disabled = true;
-      btn.textContent = "Generazione...";
-      generateError.textContent = "";
-
-      try {
-        const res = await fetch("/api/admin/generate-code", {
-          method: "POST",
-          headers: authHeaders,
-        });
-
-        const data = await res.json();
-
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem("adminToken");
-          window.location.href = "/admin/login.html";
-          return;
-        }
-
-        if (!res.ok) {
-          generateError.textContent = data.error || "Errore nella generazione del codice.";
-          return;
-        }
-
-        newCodeBox.textContent = data.code;
-        newCodeBox.style.display = "inline-flex";
-
-        loadCodes();
-      } catch (err) {
-        generateError.textContent = "Impossibile contattare il server.";
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "+ Genera codice";
-      }
-    });
-
-    loadCodes();
+    loadPassword();
+    loadRichieste();
   </script>
 </body>
 </html>
