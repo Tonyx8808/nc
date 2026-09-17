@@ -83,7 +83,9 @@ const Toggle = ({
     style={{ backgroundColor: checked ? BLUE : "rgba(255,255,255,0.15)" }}
   >
     <motion.span
-      className="inline-block h-4.5 w-4.5 rounded-full bg-white"
+      // FIX: h-4.5/w-4.5 non esistono nella spacing scale di Tailwind
+      // e in produzione non generavano CSS (pallino a dimensione 0).
+      className="inline-block h-[18px] w-[18px] rounded-full bg-white"
       animate={{ x: checked ? 22 : 3 }}
       transition={{ type: "spring", stiffness: 500, damping: 32 }}
     />
@@ -171,7 +173,12 @@ export function CookieConsent() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-x-0 bottom-0 z-100 flex justify-center px-4 pb-4 sm:px-6 sm:pb-6"
+          // FIX: "z-100" non è una classe standard di Tailwind (la scala
+          // di default si ferma a z-50), quindi non generava CSS e il
+          // banner poteva finire coperto da altri elementi fixed/sticky
+          // del layout. Uso z-[100] (sintassi arbitraria) per garantire
+          // che venga effettivamente applicata.
+          className="fixed inset-x-0 bottom-0 z-[100] flex justify-center px-4 pb-4 sm:px-6 sm:pb-6"
           initial={{ y: 120, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 120, opacity: 0 }}
