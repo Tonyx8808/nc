@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import DiconoDiNoi from "@/components/dicono-di-noi";
 
 /**
  * ─── Setup tipografico consigliato ───────────────────────────────────────
@@ -743,6 +744,7 @@ export default function HomePage() {
       <Mission />
       <ChiSiamo />
       <Percorsi />
+      <DiconoDiNoi />
     </main>
   );
 }

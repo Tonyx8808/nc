@@ -6,7 +6,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { AccessibilityProvider } from "@/components/accessibility/accessibility-context";
 import { AccessibilityPanel } from "@/components/accessibility/accessibility-panel";
 import { GoogleTranslateLoader } from "@/components/accessibility/google-translate";
-import DiconoDiNoi from "@/components/dicono-di-noi";
+
 const SITE_URL = "https://www.esaarco-consulting.it"; // 👈 sostituisci con il dominio reale della nuova landing
 
 export const metadata: Metadata = {
@@ -112,7 +112,7 @@ export default function RootLayout({
         <AccessibilityProvider>
           <Header />
           {children}
-          <DiconoDiNoi />
+          
           <Footer />
           <CookieConsent />
           <AccessibilityPanel />
